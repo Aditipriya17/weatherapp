@@ -28,40 +28,47 @@ export default function Map() {
 
     map.current.addControl(new maplibregl.NavigationControl(), "bottom-right");
 
-    map.current.on("click", function (e) {
+    map.current.on("click", async function (e) {
       if (marker != null) {
         marker.remove();
       }
 
+      const res = await fetch(
+        `http://api.weatherapi.com/v1/current.json?key=976ddd37cda349fc971170736233105&q=${e.lngLat.lat},${e.lngLat.lng}`
+      );
+
+      let data = await res.json();
+      console.log(data);
+
       const div = document.createElement("div");
       div.innerHTML = `
-      <div style="width: 300px;background-color: darkgrey;border-radius: 20px; text-align: center; padding-bottom: 20px;">
+      <div style="width: 300px;background-color: #99dddd99;border-radius: 20px; text-align: center; padding-bottom: 20px;">
       <div style="display: flex; margin: auto; width: fit-content;">
           <img src="${pin}" style="width: 30px; margin: auto 10px;" />
-          <p style="font-size: 30px;">Bangalore</p>
+          <p style="font-size: 30px;">${data.location.name}</p>
       </div>
 
-      <img src="./assets/images/cloudy.png" style="width: 150px; margin: auto;" />
-      <p style="font-size: 30px; font-weight: 600;">45°</p>
-      <p style="font-size: 24px; font-weight: 700;">Cloudy</p>
-      <p>Monday 10 August</p>
+      <img src="${data.current.condition.icon}" style="width: 150px; margin: auto;" />
+      <p style="font-size: 30px; font-weight: 600;">${data.current.feelslike_c}°</p>
+      <p style="font-size: 24px; font-weight: 700;">${data.current.condition.text}</p>
+      <p>${data.current.last_updated}</p>
       <hr style="width: 80%; border-color: black;border-width: 1px;" />
       <div style="display: flex; margin: auto; width: fit-content;">
           <div style="display: grid; margin: auto 20px;">
               <img src=${humidity} style="width: 40px;" />
-              <span>24%</span>
+              <span>${data.current.humidity}%</span>
               <span>Humdity</span>
           </div>
 
           <div style="display: grid; margin: auto 20px;">
               <img src=${wind} style="width: 40px;" />
-              <span>13km/h</span>
+              <span>${data.current.wind_kph}km/h</span>
               <span>Wind</span>
           </div>
 
           <div style="display: grid; margin: auto 20px;">
               <img src=${cloud} style="width:40px;" />
-              <span>87%</span>
+              <span>${data.current.cloud}%</span>
               <span>Cloud</span>
           </div>
       </div>
