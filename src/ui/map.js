@@ -40,6 +40,10 @@ export default function Map() {
       let data = await res.json();
       console.log(data);
 
+      const date = new Date(data.current.last_updated);
+      const options = { weekday: "long", day: "numeric", month: "long" };
+      const formattedDate = date.toLocaleString("en-US", options);
+
       const div = document.createElement("div");
       div.innerHTML = `
       <div style="width: 300px;background-color: #99dddd99;border-radius: 20px; text-align: center; padding-bottom: 20px;">
@@ -51,7 +55,7 @@ export default function Map() {
       <img src="${data.current.condition.icon}" style="width: 150px; margin: auto;" />
       <p style="font-size: 30px; font-weight: 600;">${data.current.feelslike_c}°</p>
       <p style="font-size: 24px; font-weight: 700;">${data.current.condition.text}</p>
-      <p>${data.current.last_updated}</p>
+      <p>${formattedDate}</p>
       <hr style="width: 80%; border-color: black;border-width: 1px;" />
       <div style="display: flex; margin: auto; width: fit-content;">
           <div style="display: grid; margin: auto 20px;">
