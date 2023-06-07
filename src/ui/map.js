@@ -41,11 +41,13 @@ export default function Map() {
       console.log(data);
 
       const date = new Date(data.current.last_updated);
-      const options = { weekday: "long", day: "numeric", month: "long" };
-      const formattedDate = date.toLocaleString("en-US", options);
+      const options = { weekday: 'long', day: 'numeric', month: 'long' };
+      const formattedDate = date.toLocaleString('en-US', options);
+
+      console.log(formattedDate);
 
       const div = document.createElement("div");
-      div.innerHTML = `
+      div.innerHTML = 
       <div style="width: 300px;background-color: #99dddd99;border-radius: 20px; text-align: center; padding-bottom: 20px;">
       <div style="display: flex; margin: auto; width: fit-content;">
           <img src="${pin}" style="width: 30px; margin: auto 10px;" />
